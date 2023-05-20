@@ -123,7 +123,7 @@ public class CustomerPaymentHandler {
 					continue;
 				}
 				
-				//A vezérlés csak akkor jut ide, ha customer.length != fieldsNumInCustomerCsv
+				//A vezérlés csak akkor jut ide, ha customer.length == fieldsNumInCustomerCsv
 				customerStr = "A következő ügyfél nem lett elmentve a memóriába: \n "
 								+ "Webshop azonosító: " + customer[0] + ", Ügyfél azonosító: " + customer[1] + ", Név: " + customer[2] + ", Cím: " + customer[3];
 				
@@ -303,7 +303,7 @@ public class CustomerPaymentHandler {
 					continue;
 				}
 				
-				//A vezérlés csak akkor jut ide, ha payment.length != fieldsNumInPaymentsCsv
+				//A vezérlés csak akkor jut ide, ha payment.length == fieldsNumInPaymentsCsv
 				paymentStr = "A következő fizetés nem lett elmentve a memóriába: \n "
 								+ "Webshop azonosító: " + payment[0] + ", Ügyfél azonosító: " + payment[1] + ", Fizetés módja: " + payment[2] + ", Összeg: " + payment[3]
 										+ ", Bankszámlaszám: " + payment[4]+ ", Kártyaszám: " + payment[5]+ ", Fizetés dátuma: " + payment[6];
