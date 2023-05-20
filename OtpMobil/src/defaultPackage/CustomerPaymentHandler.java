@@ -95,7 +95,11 @@ public class CustomerPaymentHandler {
 		String line = "";  
 		String splitBy = ";"; 
 		String customerStr;
-		
+		String webshopId;
+		String customerId;
+		String name;
+		String address;
+
 		BufferedReader br = null;
 
 		try {
@@ -124,11 +128,17 @@ public class CustomerPaymentHandler {
 				}
 				
 				//A vezérlés csak akkor jut ide, ha customer.length == fieldsNumInCustomerCsv
+				
+				webshopId = customer[0];
+				customerId = customer[1];
+				name = customer[2];
+				address = customer[3];
+				
 				customerStr = "A következő ügyfél nem lett elmentve a memóriába: \n "
-								+ "Webshop azonosító: " + customer[0] + ", Ügyfél azonosító: " + customer[1] + ", Név: " + customer[2] + ", Cím: " + customer[3];
+								+ "Webshop azonosító: " + webshopId + ", Ügyfél azonosító: " + customerId + ", Név: " + name + ", Cím: " + address;
 				
 				//webshop id ellenőrzés
-				if(customer[0].trim().isEmpty() || "".equals(customer[0]) || customer[0].length() > 20) {
+				if(webshopId.trim().isEmpty() || "".equals(webshopId) || webshopId.length() > 20) {
 	
 					logger.warning("Hibás a webshop azonosító! Nem lehet üres és nem lehet hosszabb 20 karakternél.\n"
 									+ customerStr);
@@ -138,7 +148,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//customer id ellenőrzés
-				if(customer[1].trim().isEmpty() || "".equals(customer[1]) || customer[1].length() > 20) {
+				if(customerId.trim().isEmpty() || "".equals(customerId) || customerId.length() > 20) {
 	
 					logger.warning("Hibás az ügyfél azonosító! Nem lehet üres és nem lehet hosszabb 20 karakternél.\n"
 									+ customerStr);
@@ -148,7 +158,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//Ügyfél név ellenőrzés
-				if(customer[2].trim().isEmpty() || "".equals(customer[2]) || customer[2].length() > 50) {
+				if(name.trim().isEmpty() || "".equals(name) || name.length() > 50) {
 	
 					logger.warning("Hibás az ügyfél név! Nem lehet üres és nem lehet hosszabb 50 karakternél.\n"
 									+ customerStr);
@@ -158,7 +168,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//Ügyfél cím ellenőrzés
-				if(customer[3].trim().isEmpty() || "".equals(customer[3]) || customer[3].length() > 100) {
+				if(address.trim().isEmpty() || "".equals(address) || address.length() > 100) {
 	
 					logger.warning("Hibás az ügyfél cím! Nem lehet üres és nem lehet hosszabb 100 karakternél.\n"
 									+ customerStr);
@@ -176,7 +186,7 @@ public class CustomerPaymentHandler {
 					for(Customer c : customers) {
 						
 						//Ha létezik a webshop-ügyfél azonosító pár
-						if(c.getWebshopAndCustomerIds().get(customer[0]) != null && c.getWebshopAndCustomerIds().get(customer[0]).contains(customer[1])) {
+						if(c.getWebshopAndCustomerIds().get(webshopId) != null && c.getWebshopAndCustomerIds().get(webshopId).contains(customerId)) {
 	
 							exists = true;
 							break;
@@ -186,7 +196,7 @@ public class CustomerPaymentHandler {
 					
 					if(exists) {
 						
-						logger.warning("A webshop azonosító és ügyfélazonosító pár már létezik: "+ customer[0] + "/" + customer[1] + "\n"
+						logger.warning("A webshop azonosító és ügyfélazonosító pár már létezik: "+ webshopId + "/" + customerId + "\n"
 								+ customerStr);
 						
 						continue;
@@ -197,7 +207,7 @@ public class CustomerPaymentHandler {
 					for(Customer c : customers) {
 						
 						//Ha létezik az ügyfél
-						if(customer[2].trim().equals(c.getName()) && customer[3].trim().equals(c.getAddress())) {
+						if(name.trim().equals(c.getName()) && address.trim().equals(c.getAddress())) {
 							
 							cust = c;
 							
@@ -214,9 +224,9 @@ public class CustomerPaymentHandler {
 						//Ellenőrizzük a webshop és ügyfél azonosítókat és ha lehet, hozzáadjuk a létező ügyfélhez
 						
 						//Ha létezik a webshop azonosító az ügyfélnél, akkor ugyanolyan webshop azonosítót nem vihetünk fel 
-						if(cust.getWebshopAndCustomerIds().get(customer[0]) != null) {
+						if(cust.getWebshopAndCustomerIds().get(webshopId) != null) {
 	
-							logger.warning("Ez a webshop azonosító az ügyfélnél már létezik. Kétszer ugyanezt nem mentjük el: "+ customer[0] + "\n"
+							logger.warning("Ez a webshop azonosító az ügyfélnél már létezik. Kétszer ugyanezt nem mentjük el: "+ webshopId + "\n"
 									+ customerStr);
 							
 							continue;
@@ -224,16 +234,16 @@ public class CustomerPaymentHandler {
 						//Ha nem létezik a webshop azonosító az ügyfélnél	
 						}else {
 						
-							cust.getWebshopAndCustomerIds().put(customer[0], customer[1]);
+							cust.getWebshopAndCustomerIds().put(webshopId, customerId);
 						}
 						
 					//Ha nem létezik az ügyfél a memóriában, akkor rögzítjük	
 					} else {
 						
 						HashMap<String, String> hm = new HashMap<String, String>();
-						hm.put(customer[0], customer[1]);
+						hm.put(webshopId, customerId);
 						
-						customers.add(new Customer(hm, customer[2].trim(), customer[3].trim()));
+						customers.add(new Customer(hm, name.trim(), address.trim()));
 						
 					}
 					
@@ -242,9 +252,9 @@ public class CustomerPaymentHandler {
 				} else {
 					
 					HashMap<String, String> hm = new HashMap<String, String>();
-					hm.put(customer[0], customer[1]);
+					hm.put(webshopId, customerId);
 					
-					customers.add(new Customer(hm, customer[2].trim(), customer[3].trim()));
+					customers.add(new Customer(hm, name.trim(), address.trim()));
 					
 				}
 				
@@ -275,7 +285,14 @@ public class CustomerPaymentHandler {
 		String line = "";  
 		String splitBy = ";"; 
 		String paymentStr;
-		
+		String webshopId;
+		String customerId;
+		String paymentType;
+		String amount;
+		String accountNumber;
+		String cardNumber;
+		String paymentDate;
+
 		BufferedReader br = null;
 
 		try {
@@ -304,12 +321,20 @@ public class CustomerPaymentHandler {
 				}
 				
 				//A vezérlés csak akkor jut ide, ha payment.length == fieldsNumInPaymentsCsv
+				webshopId = payment[0];
+				customerId = payment[1];
+				paymentType = payment[2];
+				amount = payment[3];
+				accountNumber = payment[4];
+				cardNumber = payment[5];
+				paymentDate = payment[6];
+				
 				paymentStr = "A következő fizetés nem lett elmentve a memóriába: \n "
-								+ "Webshop azonosító: " + payment[0] + ", Ügyfél azonosító: " + payment[1] + ", Fizetés módja: " + payment[2] + ", Összeg: " + payment[3]
-										+ ", Bankszámlaszám: " + payment[4]+ ", Kártyaszám: " + payment[5]+ ", Fizetés dátuma: " + payment[6];
+								+ "Webshop azonosító: " + webshopId + ", Ügyfél azonosító: " + customerId + ", Fizetés módja: " + paymentType + ", Összeg: " + amount
+										+ ", Bankszámlaszám: " + accountNumber+ ", Kártyaszám: " + cardNumber+ ", Fizetés dátuma: " + paymentDate;
 				
 				//webshop id ellenőrzés
-				if(payment[0].trim().isEmpty() || "".equals(payment[0]) || payment[0].length() > 20) {
+				if(webshopId.trim().isEmpty() || "".equals(webshopId) || webshopId.length() > 20) {
 	
 					logger.warning("Hibás a webshop azonosító! Nem lehet üres és nem lehet hosszabb 20 karakternél.\n"
 									+ paymentStr);
@@ -319,7 +344,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//customer id ellenőrzés
-				if(payment[1].trim().isEmpty() || "".equals(payment[1]) || payment[1].length() > 20) {
+				if(customerId.trim().isEmpty() || "".equals(customerId) || customerId.length() > 20) {
 	
 					logger.warning("Hibás az ügyfél azonosító! Nem lehet üres és nem lehet hosszabb 20 karakternél.\n"
 									+ paymentStr);
@@ -329,7 +354,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//Fizetés módja ellenőrzés
-				if(!"card".equals(payment[2]) && !"transfer".equals(payment[2])) {
+				if(!"card".equals(paymentType) && !"transfer".equals(paymentType)) {
 	
 					logger.warning("Hibás a fizetés módja! Card-nak vagy transfer-nek kell lennie.\n"
 									+ paymentStr);
@@ -341,7 +366,7 @@ public class CustomerPaymentHandler {
 				//Összeg ellenőrzés
 				try {
 					
-					if(payment[3].trim().isEmpty() || "".equals(payment[3]) || payment[3].length() > 10) {
+					if(amount.trim().isEmpty() || "".equals(amount) || amount.length() > 10) {
 		
 						logger.warning("Hibás az Összeg! Nem lehet üres és nem lehet hosszabb 10 karakternél.\n"
 										+ paymentStr);
@@ -360,7 +385,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//Bankszámlaszám ellenőrzés
-				if(("transfer".equals(payment[2]) && payment[4].trim().isEmpty() ) || ("transfer".equals(payment[2]) && "".equals(payment[4]) )|| payment[4].length() > 16) {
+				if(("transfer".equals(paymentType) && accountNumber.trim().isEmpty() ) || ("transfer".equals(paymentType) && "".equals(accountNumber) )|| accountNumber.length() > 16) {
 	
 					logger.warning("Hibás, vagy nincs Bankszámlaszám! Ha a fizetés módja 'transfer', nem lehet üres. Nem lehet hosszabb 16 karakternél.\n"
 									+ paymentStr);
@@ -370,7 +395,7 @@ public class CustomerPaymentHandler {
 				}
 				
 				//Kártyaszám ellenőrzés
-				if(("card".equals(payment[2]) && payment[5].trim().isEmpty() ) || ("card".equals(payment[2]) && "".equals(payment[5]) )|| payment[5].length() > 16) {
+				if(("card".equals(paymentType) && cardNumber.trim().isEmpty() ) || ("card".equals(paymentType) && "".equals(cardNumber) )|| cardNumber.length() > 16) {
 	
 					logger.warning("Hibás, vagy nincs Kártyaszám! Ha a fizetés módja 'card', nem lehet üres. Nem lehet hosszabb 16 karakternél.\n"
 									+ paymentStr);
@@ -385,7 +410,7 @@ public class CustomerPaymentHandler {
 				
 				try {
 					
-					dateFormat.parse(payment[6].trim());
+					dateFormat.parse(paymentDate.trim());
 					
 				} catch (ParseException pe) {
 				 
@@ -403,7 +428,7 @@ public class CustomerPaymentHandler {
 				for(Customer c : customers) {
 					
 					//Ha létezik a webshop-ügyfél azonosító pár
-					if(c.getWebshopAndCustomerIds().get(payment[0]) != null && c.getWebshopAndCustomerIds().get(payment[0]).contains(payment[1])) {
+					if(c.getWebshopAndCustomerIds().get(webshopId) != null && c.getWebshopAndCustomerIds().get(webshopId).contains(customerId)) {
 	
 						exists = true;
 						break;
@@ -415,7 +440,7 @@ public class CustomerPaymentHandler {
 				if(exists) {
 	
 					//Fizetések ismétlődhetnek ugyanazokkal az adatokkal, ezért nem ellenőrizzük, hogy létezik-e már fizetés ugyanazokkal az adatokkal.
-					payments.add(new Payment(payment[0], payment[1], payment[2], payment[3], payment[4], payment[5], payment[6]));
+					payments.add(new Payment(webshopId, customerId, paymentType, amount, accountNumber, cardNumber, paymentDate));
 				
 				//Ha nem létezik a webshop-ügyfél azonosító pár az ügyfeleknél, akkor nem rögzítjük a fizetést.	
 				}else {
