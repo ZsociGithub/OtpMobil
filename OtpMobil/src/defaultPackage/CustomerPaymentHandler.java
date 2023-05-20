@@ -123,17 +123,6 @@ public class CustomerPaymentHandler {
 		
 		cph.writeReport02Csv( report02CsvFile);
 
-		for(Customer c : customers) {
-			
-			System.out.println(c.getWebshopAndCustomerIds() + ", " + c.getName() + ", " + c.getAddress());  
-		}
-		
-		for(Payment p : payments) {
-		
-			System.out.println(p.getWebshopId() + ", " + p.getCustomerId() + ", " + p.getPaymentType() 
-								+ ", " + p.getAmount() + ", " + p.getAccountNumber() + ", " + p.getCardNumber() + ", " + p.getPaymentDate()); 
-		}
-
 	}
 	
 	private void readCustomerCsv(BufferedReader br) throws IOException {
@@ -287,8 +276,6 @@ public class CustomerPaymentHandler {
 				customers.add(new Customer(hm, customer[2].trim(), customer[3].trim()));
 				
 			}
-			
-			System.out.println(customer[0] + ", " + customer[1] + ", " + customer[2] + ", " + customer[3]);  
 			
 		}				
 
@@ -444,8 +431,6 @@ public class CustomerPaymentHandler {
 				continue;
 
 			}
-			
-			System.out.println(payment[0] + ", " + payment[1] + ", " + payment[2] + ", " + payment[3] + ", " + payment[4] + ", " + payment[5] + ", " + payment[6]);  
 			
 		}				
 
