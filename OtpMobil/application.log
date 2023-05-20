@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-05-20T03:24:15.425492600Z</date>
+  <millis>1684553055425</millis>
+  <nanos>492600</nanos>
+  <sequence>0</sequence>
+  <logger>defaultPackage.CustomerPaymentHandler</logger>
+  <level>WARNING</level>
+  <class>defaultPackage.CustomerPaymentHandler</class>
+  <method>readPaymentsCsv</method>
+  <thread>1</thread>
+  <message>Hibás, vagy nincs Kártyaszám! Ha a fizetés módja 'card', nem lehet üres. Nem lehet hosszabb 16 karakternél.
+A következő fizetés nem lett elmentve a memóriába: 
+ Webshop azonosító: WS02, Ügyfél azonosító: A03, Fizetés módja: card, Összeg: 2900, Bankszámlaszám: 6757619297057019, Kártyaszám: , Fizetés dátuma: 2021.01.21</message>
+</record>
+<record>
+  <date>2023-05-20T03:24:15.561129Z</date>
+  <millis>1684553055561</millis>
+  <nanos>129000</nanos>
+  <sequence>1</sequence>
+  <logger>defaultPackage.CustomerPaymentHandler</logger>
+  <level>WARNING</level>
+  <class>defaultPackage.CustomerPaymentHandler</class>
+  <method>readPaymentsCsv</method>
+  <thread>1</thread>
+  <message>Hibás dátum!
+A következő fizetés nem lett elmentve a memóriába: 
+ Webshop azonosító: WS01, Ügyfél azonosító: A03, Fizetés módja: card, Összeg: 198, Bankszámlaszám: , Kártyaszám: 5437588499034201, Fizetés dátuma: 2021.01.182</message>
+</record>
+<record>
+  <date>2023-05-20T03:24:15.567113500Z</date>
+  <millis>1684553055567</millis>
+  <nanos>113500</nanos>
+  <sequence>2</sequence>
+  <logger>defaultPackage.CustomerPaymentHandler</logger>
+  <level>WARNING</level>
+  <class>defaultPackage.CustomerPaymentHandler</class>
+  <method>readPaymentsCsv</method>
+  <thread>1</thread>
+  <message>Nem létezik a webshop-ügyfél azonosító pár az ügyfeleknél!
+A következő fizetés nem lett elmentve a memóriába: 
+ Webshop azonosító: WS02, Ügyfél azonosító: A04, Fizetés módja: card, Összeg: 22000, Bankszámlaszám: , Kártyaszám: 6757619297057019, Fizetés dátuma: 2021.01.22</message>
+</record>
+</log>
